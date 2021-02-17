@@ -1,0 +1,17 @@
+{
+  "name": "botkoi",
+  "version": "1",
+  "description": "discord bot for biskord",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": "https://github.com/biskoi/botkoi.git",
+  "author": "biskoi <biskoi@daydream.cafe>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "discord.js": "^12.5.1",
+    "dotenv": "^8.2.0"
+  }
+}
