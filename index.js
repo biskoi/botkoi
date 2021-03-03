@@ -33,6 +33,10 @@ server.on('message', (message) => {
          message.channel.send('poo poo')
          break
 
+      case '!googas':
+         message.channel.send('https://www.youtube.com/watch?v=ohNlHTJl03o')
+         break
+
       default:
          break;
    }
