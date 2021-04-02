@@ -22,11 +22,18 @@ server.on('message', async (message) => {
    console.log
    
    switch (message.content.split(' ')[0]) {
+      case '!queue':
+         queue.get()
+         break;
+      case '!fridey':
+         message.channel.send('https://i.imgur.com/ILKjO2Y.png')
+         break;
       case '!skip':
+         console.log('skip triggered')
          skip(message, queue.get(message.guild.id))
          break;
 
-      case '!pause':
+      case '!stop':
          stop(message, queue.get(message.guild.id))
          break;
 
@@ -36,7 +43,11 @@ server.on('message', async (message) => {
 
       case '!bonk':
          message.channel.send('https://media1.tenor.com/images/6493bee2be7ae168a5ef7a68cf751868/tenor.gif?itemid=17298755')
-         break
+         break;
+
+      case '!cringe':
+         message.channel.send('https://www.youtube.com/watch?v=tAwJke4UWGI')
+         break;
       
       case '!jail':
          message.channel.send('https://i.imgur.com/D33g4eu.png')
@@ -79,7 +90,7 @@ async function joinVoip(message, serverQueue) {
             voiceChannel: voiceChannel,
             connection: null,
             songs: [],
-            volume: 4,
+            volume: 3,
             playing: true
          };
       
@@ -99,36 +110,40 @@ async function joinVoip(message, serverQueue) {
          }
       } else {
       serverQueue.songs.push(song);
-      return message.channel.send(`${song.title} added`);
+      return message.channel.send(`added ${song.title}`);
       };
 
-   };
+   } else {
+      message.channel.send('bro join a channel first')
+   }
 };
 
 function skip(message, serverQueue) {
    if (!message.member.voice.channel)
      return message.channel.send(
-       "NO"
+       "UR NOT IN A CHANNEL"
      );
    if (!serverQueue)
-     return message.channel.send("no");
+     return message.channel.send("nothing to skip");
    serverQueue.connection.dispatcher.end();
  }
  
  function stop(message, serverQueue) {
    if (!message.member.voice.channel)
      return message.channel.send(
-       "NO"
+       "wtf ur not even in a channel"
      );
      
    if (!serverQueue)
-     return message.channel.send("NOOO");
+     return message.channel.send("what r u even trying to stop");
      
    serverQueue.songs = [];
    serverQueue.connection.dispatcher.end();
+   message.channel.send('ok bye')
  }
  
  function play(guild, song) {
+   // let guild = message.guild
    const serverQueue = queue.get(guild.id);
    if (!song) {
      serverQueue.voiceChannel.leave();
@@ -141,8 +156,9 @@ function skip(message, serverQueue) {
      .on("finish", () => {
        serverQueue.songs.shift();
        play(guild, serverQueue.songs[0]);
+      //  message.channel.send(`now playing: ${serverQueue.songs[0].title}`)
      })
      .on("error", error => console.error(error));
-   dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+   dispatcher.setVolumeLogarithmic(serverQueue.volume / 6);
    // serverQueue.textChannel.send(`Start playing: **${song.title}**`);
  }
