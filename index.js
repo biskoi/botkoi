@@ -28,9 +28,11 @@ server.on('message', async (message) => {
       case '!fridey':
          message.channel.send('https://i.imgur.com/ILKjO2Y.png')
          break;
+
       case '!skip':
          console.log('skip triggered')
          skip(message, queue.get(message.guild.id))
+         message.channel.send('k')
          break;
 
       case '!stop':
@@ -41,12 +43,20 @@ server.on('message', async (message) => {
          joinVoip(message, queue.get(message.guild.id))
          break;
 
+      case '!p':
+         joinVoip(message, queue.get(message.guild.id))
+         break;
+
       case '!bonk':
          message.channel.send('https://media1.tenor.com/images/6493bee2be7ae168a5ef7a68cf751868/tenor.gif?itemid=17298755')
          break;
 
       case '!cringe':
          message.channel.send('https://www.youtube.com/watch?v=tAwJke4UWGI')
+         break;
+
+      case '!sprite':
+         message.channel.send('https://i.imgur.com/neTFP9i.png')
          break;
       
       case '!jail':
@@ -101,6 +111,7 @@ async function joinVoip(message, serverQueue) {
          try {
             var connection = await voiceChannel.join();
             queueContruct.connection = connection;
+            message.channel.send(`added **${song.title}**`);
             play(message.guild, queueContruct.songs[0]);
          } 
          catch (err) {
@@ -110,7 +121,7 @@ async function joinVoip(message, serverQueue) {
          }
       } else {
       serverQueue.songs.push(song);
-      return message.channel.send(`added ${song.title}`);
+      return message.channel.send(`added **${song.title}**`);
       };
 
    } else {
@@ -146,6 +157,7 @@ function skip(message, serverQueue) {
    // let guild = message.guild
    const serverQueue = queue.get(guild.id);
    if (!song) {
+   //   message.channel.send('deo smells')
      serverQueue.voiceChannel.leave();
      queue.delete(guild.id);
      return;
